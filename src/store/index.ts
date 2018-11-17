@@ -8,7 +8,9 @@ export default new Vuex.Store({
 
   },
   mutations: {
-
+    LOGIN(state, payload: string) {
+      console.log(payload);
+    },
   },
   actions: {
 
