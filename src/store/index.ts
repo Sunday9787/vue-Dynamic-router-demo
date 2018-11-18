@@ -1,18 +1,14 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { ModuleTree } from 'vuex';
+
+import auth, { UserStoreType } from './modules/user';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
+interface ModulesType {
+  auth: UserStoreType;
+}
 
-  },
-  mutations: {
-    LOGIN(state, payload: string) {
-      console.log(payload);
-    },
-  },
-  actions: {
+const modules: ModuleTree<ModulesType> = { auth };
 
-  },
-});
+export default new Vuex.Store({ modules });
