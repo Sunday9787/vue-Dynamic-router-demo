@@ -1,23 +1,30 @@
 import { setToken, removeToken } from '@/tools/auth';
 import { Auth } from '@/@types/vuex';
+import Allrouter from '@/route/Permissroute';
+import { filterAsyncRouter } from '@/tools';
 
 export interface UserStoreType extends Auth.StoreType {}
-
-export interface LoginForm extends Auth.LoginForm {}
 
 
 
 const state: Auth.State = {
   TOKEN: '',
   userInfo: {
-    role: null,
+    role: 1,
     phone: null,
-  }
-}; 
+  },
+  addRouters: [],
+};
 
 const getters: Auth.GettersType = {
   TOKEN(state) {
     return state.TOKEN;
+  },
+  GetUserInfo(state) {
+    return state.userInfo;
+  },
+  addRouters(state) {
+    return state.addRouters;
   }
 };
 
@@ -32,6 +39,9 @@ const mutations: Auth.MutationsType = {
   REMOVE_TOKEN(state) {
     state.TOKEN = '';
     removeToken();
+  },
+  GenerateRoutes(state, payload) {
+    state.addRouters = filterAsyncRouter(Allrouter, payload);
   },
 };
 

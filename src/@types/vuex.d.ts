@@ -11,20 +11,29 @@ import {
   ActionTree,
   MutationTree } from 'vuex';
 
-interface UserInfoType {
-  role: 1 | 2 | 3 | null;
-  phone: number | null;
-}
 
 export namespace Auth {
 
+  interface UserInfoType {
+    role: 1 | 2 | 3 | 4;
+    phone: number | null;
+  }
+
+  interface GenerateRoutesPayload {
+    name: string;
+    children: GenerateRoutesPayload[]
+  }
+
   interface State {
     TOKEN: string;
-    userInfo: UserInfoType
+    userInfo: UserInfoType;
+    addRouters: any[],
   }
 
   interface GettersType {
     TOKEN(state: State): string;
+    GetUserInfo(state: State): UserInfoType;
+    addRouters(state: State): any[];
     [key: string]: any;
   }
 
@@ -32,6 +41,7 @@ export namespace Auth {
     SET_TOKEN(state: State, token: string): void;
     SET_USER_INFO(state: State, payload: UserInfoType): void;
     REMOVE_TOKEN(state: State): void;
+    GenerateRoutes(state: State, payload: GenerateRoutesPayload[]): void;
     [key: string]: any;
   }
 
@@ -52,7 +62,10 @@ export namespace Auth {
   interface LoginForm {
     phone: string;
     password: string;
-    role: 1 | 2 | 3,
+    /**
+     * 2 技术 3 财务 4 运营
+     */
+    role: 1 | 2 | 3 | 4,
   }
 
   interface LOGIN {
