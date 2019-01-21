@@ -40,7 +40,7 @@ const asyncRouterMap: RouteConfig[] = [
             path: 'withdraw',
             name: 'withdraw',
             component: () => import('@/views/home/account/withdraw.vue'),
-          }
+          },
         ],
       },
       {

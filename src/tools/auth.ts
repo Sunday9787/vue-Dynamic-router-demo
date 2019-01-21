@@ -9,20 +9,16 @@ import Cookies from 'js-cookie';
 
 const TokenKey = 'token';
 
-function setToken (token: string) {
+function setToken(token: string) {
   return Cookies.set(TokenKey, token, { expires: 1 });
 }
 
-function getToken () {
+function getToken() {
   return Cookies.get(TokenKey);
 }
 
-function removeToken () {
+function removeToken() {
   return Cookies.remove(TokenKey);
 }
 
-export {
-  setToken,
-  getToken,
-  removeToken,
-};
+export { setToken, getToken, removeToken };

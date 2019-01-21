@@ -10,7 +10,14 @@ import {
   GetterTree,
   ActionTree,
   MutationTree } from 'vuex';
-
+  
+  interface StoreType<S,G,M,A> {
+    namespaced?: boolean;
+    state: S;
+    getters: GetterTree<G, any>;
+    mutations: MutationTree<M>;
+    actions: ActionTree<A, any>;
+  }
 
 export namespace Auth {
 
@@ -41,7 +48,7 @@ export namespace Auth {
     SET_TOKEN(state: State, token: string): void;
     SET_USER_INFO(state: State, payload: UserInfoType): void;
     REMOVE_TOKEN(state: State): void;
-    GenerateRoutes(state: State, payload: GenerateRoutesPayload[]): void;
+    GENERATE_ROUTES(state: State, payload: GenerateRoutesPayload[]): void;
     [key: string]: any;
   }
 
@@ -49,14 +56,6 @@ export namespace Auth {
     LOGIN(context: ActionContext<State, any>, payload: LoginForm): Promise<string>;
     LOGOUT(context: ActionContext<State, any>): Promise<string>;
     [key: string]: any;
-  }
-
-  interface StoreType {
-    namespaced: boolean;
-    state: State;
-    getters: GetterTree<GettersType, any>;
-    mutations: MutationTree<MutationsType>;
-    actions: ActionTree<ActionsType, any>;
   }
 
   interface LoginForm {

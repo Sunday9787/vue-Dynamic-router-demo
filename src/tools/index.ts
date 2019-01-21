@@ -1,6 +1,6 @@
 interface GenerateRoutesPayload {
   name?: string;
-  children?: GenerateRoutesPayload[]
+  children?: GenerateRoutesPayload[];
 }
 
 export function filterAsyncRouter(source: GenerateRoutesPayload[], roleSheet: GenerateRoutesPayload[]): GenerateRoutesPayload[] {
@@ -17,4 +17,4 @@ export function filterAsyncRouter(source: GenerateRoutesPayload[], roleSheet: Ge
     });
   });
   return target;
-};
+}

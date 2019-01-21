@@ -48,13 +48,13 @@ import { Vue, Component } from 'vue-property-decorator';
 import { Mutation, namespace } from 'vuex-class';
 import { Auth } from '@/@types/vuex';
 
-const UserStore = namespace('auth')
+const UserStore = namespace('auth');
 
 @Component
 
 export default class VuexLogin extends Vue {
 
-  @UserStore.Action('LOGIN') LOGIN!: Auth.LOGIN;
+  @UserStore.Action('LOGIN') private LOGIN!: Auth.LOGIN;
 
   private loginLoading: boolean = false;
 
@@ -93,6 +93,6 @@ export default class VuexLogin extends Vue {
     const response = await this.LOGIN(this.form);
     this.loginLoading = false;
     this.$router.push({ path: '/home' });
-  }
+  };
 }
 </script>

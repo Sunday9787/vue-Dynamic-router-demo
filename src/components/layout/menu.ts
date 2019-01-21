@@ -31,5 +31,5 @@ export const menu: MenuType[] = [
       { name: '商户充值', icon: 'payment', link: 'recharge' },
       { name: '提现', icon: 'autorenew', link: 'withdraw' },
     ],
-  }
+  },
 ];
