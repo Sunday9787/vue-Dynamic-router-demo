@@ -12,18 +12,18 @@ import {
   MutationTree } from 'vuex';
   import { RouteConfig } from 'vue-router';
   
-  interface StoreType<S,G,M,A> {
+  interface StoreType<S> {
     namespaced?: boolean;
     state: S;
-    getters: GetterTree<G, any>;
-    mutations: MutationTree<M>;
-    actions: ActionTree<A, any>;
+    getters: GetterTree<S, any>;
+    mutations: MutationTree<S>;
+    actions: ActionTree<S, any>;
   }
 
 export namespace Auth {
 
   interface UserInfoType {
-    role: 1 | 2 | 3 | 4;
+    role?: 1 | 2 | 3 | 4;
     phone: number | null;
   }
 
@@ -36,28 +36,7 @@ export namespace Auth {
     TOKEN: string;
     userInfo: UserInfoType;
     addRouters: any[],
-  }
-
-  interface GettersType {
-    TOKEN(state: State): string;
-    USER_INFO(state: State): UserInfoType;
-    ADD_ROUTERS(state: State): any[];
-    [key: string]: any;
-  }
-
-  interface MutationsType {
-    SET_TOKEN(state: State, token: string): void;
-    SET_USER_INFO(state: State, payload: UserInfoType): void;
-    REMOVE_TOKEN(state: State): void;
-    SET_ROUTER(state: State, router: RouteConfig[]): void;
-    [key: string]: any;
-  }
-
-  interface ActionsType {
-    LOGIN(context: ActionContext<State, any>, payload: LoginForm): Promise<string>;
-    LOGOUT(context: ActionContext<State, any>): Promise<string>;
-    GENERATE_ROUTES(context: ActionContext<State, any>, role: number): void;
-    [key: string]: any;
+    role?: number;
   }
 
   interface LoginForm {
@@ -66,7 +45,7 @@ export namespace Auth {
     /**
      * 2 技术 3 财务 4 运营
      */
-    role: 1 | 2 | 3 | 4,
+    role: 1 | 2 | 3 | 4 | '',
   }
 
   interface LOGIN {

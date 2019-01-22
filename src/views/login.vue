@@ -61,7 +61,7 @@ export default class VuexLogin extends Vue {
   private form: Auth.LoginForm = {
     phone: '17682311696',
     password: 'asd123123',
-    role: 1,
+    role: '',
   };
 
   private roles = [

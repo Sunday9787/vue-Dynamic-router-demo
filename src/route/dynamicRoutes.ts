@@ -1,5 +1,9 @@
 import { RouteConfig } from 'vue-router';
 
+/**
+ * 切记 路由权限要跟 菜单栏 权限 对应
+ */
+
 const dynamicRoutes: RouteConfig[] = [
   {
     path: '/home',
@@ -19,7 +23,7 @@ const dynamicRoutes: RouteConfig[] = [
         path: 'app',
         name: 'app',
         meta: {
-          roles: [1, 2],
+          roles: [1, 2, 3],
         },
         component: () => import('@/views/home/app.vue'),
       },
@@ -27,7 +31,7 @@ const dynamicRoutes: RouteConfig[] = [
         path: 'account',
         name: 'account',
         meta: {
-          roles: [1, 2, 3],
+          roles: [1, 3],
         },
         component: () => import('@/views/home/account/index.vue'),
         children: [
@@ -47,7 +51,7 @@ const dynamicRoutes: RouteConfig[] = [
         path: 'report',
         name: 'report',
         meta: {
-          roles: [1, 2, 3, 4],
+          roles: [1, 2, 4],
         },
         component: () => import('@/views/home/report/index.vue'),
       },

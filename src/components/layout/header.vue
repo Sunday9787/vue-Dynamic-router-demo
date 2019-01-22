@@ -66,12 +66,41 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { menu } from './menu';
+import { RouteConfig } from 'vue-router';
+import { Getter, namespace } from 'vuex-class';
+import constantMenu, { MenuType } from './menu';
+import { Auth } from '@/@types/vuex';
+
+const AuthStore = namespace('auth');
+
+function hasPermission(role: number, menu: MenuType) {
+  if (menu.roles) {
+    return menu.roles.includes(role);
+  }
+  return true;
+}
+
+function GenerateMenu(menu: MenuType[], role: number) {
+  const target: MenuType[] = [];
+  menu.forEach((item) => {
+    const tmp = { ...item };
+    if (hasPermission(role, item)) {
+      if (tmp.sub) {
+        tmp.sub = GenerateMenu(tmp.sub, role);
+      }
+      target.push(tmp);
+    }
+  });
+  return target;
+}
 
 @Component
 
 export default class VuexHeader extends Vue {
+  @AuthStore.Getter('ROLE') private ROLE!: number;
+
   private drawer = true;
+
   private items = [
     { title: 'Click Me', type: '' },
     { title: 'Click Me', type: '' },
@@ -79,6 +108,14 @@ export default class VuexHeader extends Vue {
     { title: '退出', type: 'logout' },
   ];
 
-  private menu = menu;
+  private menu: MenuType[] = [];
+
+  private created() {
+    if (this.ROLE === 1) {
+      this.menu = constantMenu;
+      return;
+    }
+    this.menu = GenerateMenu(constantMenu, this.ROLE);
+  }
 }
 </script>

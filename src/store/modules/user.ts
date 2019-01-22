@@ -5,8 +5,15 @@ import permissionRouter from '@/route/dynamicRoutes';
 
 type Role = 1 | 2 | 3 | 4;
 
+/**
+ * 老板 1
+ * 技术 2
+ * 财务 3
+ * 运营 4
+ */
+
 // tslint:disable-next-line:no-empty-interface
-export interface AuthStoreType extends StoreType<Auth.State, Auth.GettersType, Auth.MutationsType, Auth.ActionsType> {}
+export interface AuthStoreType extends StoreType<Auth.State> {}
 
 
 
@@ -46,9 +53,10 @@ const AuthStore: AuthStoreType = {
     TOKEN: '',
     userInfo: {
       role: 1,
-      phone: null,
+      phone: null, // 仅做测试
     },
     addRouters: [],
+    role: undefined,
   },
   getters: {
     TOKEN(state) {
@@ -59,6 +67,9 @@ const AuthStore: AuthStoreType = {
     },
     ADD_ROUTERS(state) {
       return state.addRouters;
+    },
+    ROLE(state) {
+      return state.role;
     },
   },
   mutations: {
@@ -76,13 +87,16 @@ const AuthStore: AuthStoreType = {
     SET_ROUTER(state, router) {
       state.addRouters = router;
     },
+    SET_ROLE(state, role: number) {
+      state.role = role;
+    },
   },
   actions: {
-    LOGIN({ commit }, { phone, role, password }) {
+    LOGIN({ commit }, { phone, role, password }: Auth.LoginForm) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          // 向后端提交请求 返回true
           commit('SET_TOKEN', '2ZV74_7d2m2KuVmFEWjgF-FnnLo-rqzMOxrodzJn7BsoPJLa');
+          // 仅做测试
           commit('SET_USER_INFO', { phone, role });
           resolve(password);
         }, 2000);
@@ -107,6 +121,16 @@ const AuthStore: AuthStoreType = {
         }
         commit('SET_ROUTER', accessedRouters);
         resolve();
+      });
+    },
+    GET_USER_ROLE({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        let role;
+        setTimeout(() => {
+          role = state.userInfo.role;
+          commit('SET_ROLE', role );
+          resolve(role);
+        }, 1500);
       });
     },
   },
