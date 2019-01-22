@@ -81,7 +81,7 @@ export default class VuexLogin extends Vue {
     role: [
       (v: string) => !!v || '请选择角色',
     ],
-  }
+  };
 
   private async login() {
     const form = this.$refs.form as any;
@@ -93,6 +93,6 @@ export default class VuexLogin extends Vue {
     const response = await this.LOGIN(this.form);
     this.loginLoading = false;
     this.$router.push({ path: '/home' });
-  };
+  }
 }
 </script>

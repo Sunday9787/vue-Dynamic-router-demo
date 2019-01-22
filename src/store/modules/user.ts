@@ -1,17 +1,43 @@
+import { RouteConfig } from 'vue-router';
 import { setToken, removeToken } from '@/tools/auth';
 import { Auth, StoreType } from '@/@types/vuex';
-import Allrouter from '@/route/Permissroute';
-import { filterAsyncRouter } from '@/tools';
+import permissionRouter from '@/route/dynamicRoutes';
+
+type Role = 1 | 2 | 3 | 4;
 
 // tslint:disable-next-line:no-empty-interface
-export interface UserStoreType extends StoreType<Auth.State, Auth.GettersType, Auth.MutationsType, Auth.ActionsType> {}
+export interface AuthStoreType extends StoreType<Auth.State, Auth.GettersType, Auth.MutationsType, Auth.ActionsType> {}
 
-interface AuthStoreType {
-  namespaced: boolean;
-  state: Auth.State;
-  mutations: Auth.MutationsType;
-  getters: Auth.GettersType;
-  actions: Auth.ActionsType;
+
+
+/**
+ * 敲黑板
+ * 返回用户是否拥有路由的权限
+ *
+ * @param {Role} role
+ * @param {RouteConfig} route
+ * @returns
+ */
+function hasPermission(role: Role, route: RouteConfig) {
+  if (route.meta && route.meta.roles) {
+    return route.meta.roles.includes(role) as boolean;
+  }
+  // 如果没有指定路由权限 默认返回 此路由
+  return true;
+}
+
+function filterAsyncRouter(routers: RouteConfig[], role: Role) {
+  const target: RouteConfig[] = [];
+  routers.forEach((route) => {
+    const tmp = { ...route };
+    if (hasPermission(role, route)) {
+      if (tmp.children) {
+        tmp.children = filterAsyncRouter(tmp.children, role);
+      }
+      target.push(tmp);
+    }
+  });
+  return target;
 }
 
 const AuthStore: AuthStoreType = {
@@ -25,30 +51,30 @@ const AuthStore: AuthStoreType = {
     addRouters: [],
   },
   getters: {
-    TOKEN(states) {
-      return states.TOKEN;
+    TOKEN(state) {
+      return state.TOKEN;
     },
-    GetUserInfo(states) {
-      return states.userInfo;
+    USER_INFO(state) {
+      return state.userInfo;
     },
-    addRouters(states) {
-      return states.addRouters;
+    ADD_ROUTERS(state) {
+      return state.addRouters;
     },
   },
   mutations: {
-    SET_TOKEN(states, token) {
-      states.TOKEN = token;
+    SET_TOKEN(state, token) {
+      state.TOKEN = token;
       setToken(token);
     },
-    SET_USER_INFO(states, payload) {
-      states.userInfo = payload;
+    SET_USER_INFO(state, payload) {
+      state.userInfo = payload;
     },
-    REMOVE_TOKEN(states) {
-      states.TOKEN = '';
+    REMOVE_TOKEN(state) {
+      state.TOKEN = '';
       removeToken();
     },
-    GENERATE_ROUTES(states, payload) {
-      states.addRouters = filterAsyncRouter(Allrouter, payload);
+    SET_ROUTER(state, router) {
+      state.addRouters = router;
     },
   },
   actions: {
@@ -69,6 +95,18 @@ const AuthStore: AuthStoreType = {
         setTimeout(() => {
           resolve('LOGOUT');
         }, 2000);
+      });
+    },
+    GENERATE_ROUTES({ commit }, role) {
+      return new Promise((resolve) => {
+        let accessedRouters;
+        if (role === 1) {
+          accessedRouters = permissionRouter;
+        } else {
+          accessedRouters = filterAsyncRouter(permissionRouter, role);
+        }
+        commit('SET_ROUTER', accessedRouters);
+        resolve();
       });
     },
   },

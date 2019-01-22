@@ -1,6 +1,6 @@
 import { RouteConfig } from 'vue-router';
 
-const asyncRouterMap: RouteConfig[] = [
+const dynamicRoutes: RouteConfig[] = [
   {
     path: '/home',
     name: 'home',
@@ -55,4 +55,4 @@ const asyncRouterMap: RouteConfig[] = [
   },
 ];
 
-export default asyncRouterMap;
+export default dynamicRoutes;

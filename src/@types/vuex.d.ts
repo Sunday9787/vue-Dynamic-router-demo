@@ -10,6 +10,7 @@ import {
   GetterTree,
   ActionTree,
   MutationTree } from 'vuex';
+  import { RouteConfig } from 'vue-router';
   
   interface StoreType<S,G,M,A> {
     namespaced?: boolean;
@@ -39,8 +40,8 @@ export namespace Auth {
 
   interface GettersType {
     TOKEN(state: State): string;
-    GetUserInfo(state: State): UserInfoType;
-    addRouters(state: State): any[];
+    USER_INFO(state: State): UserInfoType;
+    ADD_ROUTERS(state: State): any[];
     [key: string]: any;
   }
 
@@ -48,13 +49,14 @@ export namespace Auth {
     SET_TOKEN(state: State, token: string): void;
     SET_USER_INFO(state: State, payload: UserInfoType): void;
     REMOVE_TOKEN(state: State): void;
-    GENERATE_ROUTES(state: State, payload: GenerateRoutesPayload[]): void;
+    SET_ROUTER(state: State, router: RouteConfig[]): void;
     [key: string]: any;
   }
 
   interface ActionsType {
     LOGIN(context: ActionContext<State, any>, payload: LoginForm): Promise<string>;
     LOGOUT(context: ActionContext<State, any>): Promise<string>;
+    GENERATE_ROUTES(context: ActionContext<State, any>, role: number): void;
     [key: string]: any;
   }
 

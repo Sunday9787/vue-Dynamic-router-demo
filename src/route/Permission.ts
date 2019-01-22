@@ -7,50 +7,7 @@ const whiteList = [
   '/',
 ];
 
-// 2 技术 3 财务 4 运营
-const roleRouteMap = {
-  1: [
-    {
-      name: 'home',
-      children: [
-        { name: 'index' },
-        { name: 'app' },
-        { name: 'report' },
-        { name: 'account' },
-      ],
-    },
-  ],
-  2: [
-    {
-      name: 'home',
-      children: [
-        { name: 'index' },
-        { name: 'app' },
-        { name: 'report' },
-        { name: 'account' },
-      ],
-    },
-  ],
-  3: [
-    {
-      name: 'home',
-      children: [
-        { name: 'index' },
-        { name: 'report' },
-        { name: 'account' },
-      ],
-    },
-  ],
-  4: [
-    {
-      name: 'home',
-      children: [
-        { name: 'index' },
-        { name: 'report' },
-      ],
-    },
-  ],
-};
+// 1 boss 2 技术 3 财务 4 运营
 
 router.beforeEach((to, from, next) => {
   const token = store.getters['auth/TOKEN'];
@@ -59,10 +16,11 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' });
     } else {
       // 判断是否已经生成路由
-      if (store.getters['auth/addRouters'].length === 0) {
-        const { role } = store.getters['auth/GetUserInfo'] as Auth.UserInfoType;
-        store.commit('auth/GenerateRoutes', roleRouteMap[role]);
-        router.addRoutes(store.getters['auth/addRouters']);
+      if (store.getters['auth/ADD_ROUTERS'].length === 0) {
+        // 在实际业务中应该发起一个action 去请求权限接口 返回权限
+        const { role } = store.getters['auth/USER_INFO'] as Auth.UserInfoType;
+        store.dispatch('auth/GENERATE_ROUTES', role);
+        router.addRoutes(store.getters['auth/ADD_ROUTERS']);
         next({...to, replace: true});
       } else {
         next();

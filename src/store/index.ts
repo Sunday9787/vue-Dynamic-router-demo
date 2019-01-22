@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex, { ModuleTree } from 'vuex';
 
-import auth, { UserStoreType } from './modules/user';
+import auth, { AuthStoreType } from './modules/user';
 
 Vue.use(Vuex);
 
 interface ModulesType {
-  auth: UserStoreType;
+  auth: AuthStoreType;
 }
 
 const modules: ModuleTree<ModulesType> = { auth };
