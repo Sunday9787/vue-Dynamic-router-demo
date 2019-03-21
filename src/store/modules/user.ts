@@ -12,8 +12,7 @@ type Role = 1 | 2 | 3 | 4;
  * 运营 4
  */
 
-// tslint:disable-next-line:no-empty-interface
-export interface AuthStoreType extends StoreType<Auth.State> {}
+type AuthStoreType = StoreType<Auth.State>;
 
 
 
